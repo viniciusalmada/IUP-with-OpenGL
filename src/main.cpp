@@ -1,6 +1,19 @@
 #include <iup/iup.h>
 #include <iup/iupgl.h>
 
+#include <GL/glew.h>
+
+int canvas_action_cb(Ihandle* ih, float posx, float posy)
+{
+  IupGLMakeCurrent(ih);
+  glClearColor(1.0f, 0.3f, 0.3f, 1.0f);  /* White */
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  IupGLSwapBuffers(ih);
+
+  return IUP_DEFAULT;
+}
+
 int main(int argc, char* argv[])
 {
   IupOpen(&argc, &argv);
@@ -8,6 +21,9 @@ int main(int argc, char* argv[])
 
   Ihandle* canvas = IupGLCanvas(nullptr);
   IupSetAttribute(canvas, "EXPAND", "YES");
+  IupSetCallback(canvas, "ACTION", (Icallback)canvas_action_cb);
+
+
 
   Ihandle* box = IupHbox(canvas, nullptr);
 
